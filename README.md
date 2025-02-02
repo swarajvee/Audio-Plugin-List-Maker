@@ -21,7 +21,7 @@ pip install openpyxl numpy
 # Step 3: Running the Script
 python plugin_list_generator.py
 
-# The script will prompt you to enter the plugin directory paths for VST, VST3, AU, and AAX plugins. Press `Enter` if you don't have a particular type of plugin.
+The script will prompt you to enter the plugin directory paths for VST, VST3, AU, and AAX plugins. Press `Enter` if you don't have a particular type of plugin.
 echo "Enter the VST plugin directory path:"
 read vst_path
 echo "Enter the VST3 plugin directory path:"
