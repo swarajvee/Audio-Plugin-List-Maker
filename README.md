@@ -14,7 +14,7 @@ It categorizes them by plugin type and also creates a separate sheet for common 
 # Step 1: Clone the repository
 ```bash
 git clone git@github.com:swarajvee/Audio-Plugin-List-Maker.git
-cd Audio-Plugin-List-Maker
+cd Audio-Plugin-List-Maker```
 
 # Step 2: Install dependencies
 `pip install -r requirements.txt`
