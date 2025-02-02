@@ -1,16 +1,15 @@
 # Plugin List Generator
-
-# This Python script generates an Excel file listing all plugins from specified directories for VST, VST3, AU, and AAX formats. 
-# It categorizes them by plugin type and also creates a separate sheet for common plugins across formats along with their versions.
+This Python script generates an Excel file listing all plugins from specified directories for VST, VST3, AU, and AAX formats. 
+It categorizes them by plugin type and also creates a separate sheet for common plugins across formats along with their versions.
 
 # Features:
-# - Scans specified directories for plugins in VST, VST3, AU, and AAX formats.
-# - Generates an Excel file with detailed plugin lists.
-# - Creates a second sheet with common plugins across different formats and their versions.
+- Scans specified directories for plugins in VST, VST3, AU, and AAX formats.
+- Generates an Excel file with detailed plugin lists.
+- Creates a second sheet with common plugins across different formats and their versions.
 
 # Prerequisites:
-# 1. Python 3.x
-# 2. `openpyxl` and `numpy` libraries
+1. Python 3.x
+2. `openpyxl` and `numpy` libraries
 
 # Step 1: Clone the repository
 git clone https://github.com/your-username/plugin-list-generator.git
