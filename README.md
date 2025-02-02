@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Plugin List Generator
 
 # This Python script generates an Excel file listing all plugins from specified directories for VST, VST3, AU, and AAX formats. 
