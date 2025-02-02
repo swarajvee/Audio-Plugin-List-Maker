@@ -12,8 +12,8 @@ It categorizes them by plugin type and also creates a separate sheet for common 
 2. `openpyxl` and `numpy` libraries
 
 # Step 1: Clone the repository
-`git clone git@github.com:swarajvee/Audio-Plugin-List-Maker.git`
-`cd Audio-Plugin-list-Maker`
+`git clone git@github.com:swarajvee/Audio-Plugin-List-Maker.git
+cd Audio-Plugin-list-Maker`
 
 # Step 2: Install dependencies
 `pip install -r requirements.txt`
