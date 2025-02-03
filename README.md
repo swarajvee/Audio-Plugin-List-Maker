@@ -18,10 +18,14 @@ cd Audio-Plugin-List-Maker
 ```
 
 # Step 2: Install dependencies
-`pip install -r requirements.txt`
+```sh
+pip install -r requirements.txt
+```
 
 # Step 3: Running the Script
-`python plugin_list_generator.py`
+```sh
+python plugin_list_generator.py
+```
 
 The script will prompt you to enter the plugin directory paths for VST, VST3, AU, and AAX plugins. Press `Enter` if you don't have a particular type of plugin.
 Output will be an Excel file created in the current working directory with the filename `plugin list_YYYY-MM-DD_HH-MM-SS.xlsx`
