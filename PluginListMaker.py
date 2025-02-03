@@ -5,47 +5,49 @@ import numpy as np
 
 def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
     """Makes excel file"""
-
     wb = openpyxl.Workbook()
     sheet = wb.active
     sheet.title = 'My Plugin List'
-    headers = ['Sl.No','VST3 Plugins', 'VST Plugins', 'AU Plugins', 'AAX Plugins']
+    headers = ['Sl.No', 'VST3 Plugins', 'VST Plugins', 'AU Plugins', 'AAX Plugins']
     sheet.append(headers)
 
-    sl_no = np.arange(1,len(max(vst3_list, vst_list, au_list, aax_list, key=len))+1, 1)
+    sl_no = np.arange(1, len(max(vst3_list, vst_list, au_list, aax_list, key=len)) + 1, 1)
     for o, no in enumerate(sl_no, start=2):
         sheet.cell(row=o, column=1, value=no)
-                      
+
+    new_vst3_list = []
+    new_vst_list = []
+    new_au_list = []
+    new_aax_list = []
+
     if vst3_list:
-        new_vst3_list = []
-        for i, vst3 in enumerate(vst3_list, start=2):
-            sheet.cell(row=i, column=2, value=vst3.replace('.vst3', ''))
-            new_vst3_list.append(vst3.replace('.vst3', ''))
+        new_vst3_list = [vst3.replace('.vst3', '') for vst3 in vst3_list]
+        for i, vst3 in enumerate(new_vst3_list, start=2):
+            sheet.cell(row=i, column=2, value=vst3)
+
     if vst_list:
-        new_vst_list = []
-        for j, vst in enumerate(vst_list, start=2):
-            sheet.cell(row=j, column=3, value=vst.replace('.vst', ''))
-            new_vst_list.append(vst.replace('.vst', ''))
+        new_vst_list = [vst.replace('.vst', '') for vst in vst_list]
+        for j, vst in enumerate(new_vst_list, start=2):
+            sheet.cell(row=j, column=3, value=vst)
+
     if au_list:
-        new_au_list = []
-        for k, au in enumerate(au_list, start=2):
-            sheet.cell(row=k, column=4, value=au.replace('.component', ''))
-            new_au_list.append(au.replace('.component', ''))
+        new_au_list = [au.replace('.component', '') for au in au_list]
+        for k, au in enumerate(new_au_list, start=2):
+            sheet.cell(row=k, column=4, value=au)
+
     if aax_list:
-        new_aax_list = []
-        for l, aax in enumerate(aax_list, start=2):
-            sheet.cell(row=l, column=5, value=aax.replace('.aaxplugin', ''))
-            new_aax_list.append(aax.replace('.aaxplugin', ''))
-    
+        new_aax_list = [aax.replace('.aaxplugin', '') for aax in aax_list]
+        for l, aax in enumerate(new_aax_list, start=2):
+            sheet.cell(row=l, column=5, value=aax)
+
     sheet.row_dimensions[1].height = 48
     sheet.column_dimensions['B'].width = 35
     sheet.column_dimensions['C'].width = 35
     sheet.column_dimensions['D'].width = 35
     sheet.column_dimensions['E'].width = 40
 
-    #sheet 2 things
     common_plugins_sheet = wb.create_sheet(title='Common Plugins')
-    headers_common = ['Sl. No','Common Plugins', 'Versions']
+    headers_common = ['Sl. No', 'Common Plugins', 'Versions']
     common_plugins_sheet.append(headers_common)
 
     combined_plugins = sorted(set(new_vst3_list) | set(new_vst_list) | set(new_au_list) | set(new_aax_list))
@@ -54,23 +56,19 @@ def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
 
     for plugin in combined_plugins:
         versions = []
-        if new_vst3_list:
-            if plugin in new_vst3_list:
-                versions.append('VST3')
-        if new_vst_list:        
-            if plugin in new_vst_list:
-                versions.append('VST')
-        if new_au_list:
-            if plugin in new_au_list:
-                versions.append('AU')
-        if new_aax_list:
-            if plugin in new_aax_list:
-                versions.append('AAX')
-        if len(versions)>1:
+        if plugin in new_vst3_list:
+            versions.append('VST3')
+        if plugin in new_vst_list:
+            versions.append('VST')
+        if plugin in new_au_list:
+            versions.append('AU')
+        if plugin in new_aax_list:
+            versions.append('AAX')
+        if len(versions) > 1:
             common_plugins.append(plugin)
             plugin_versions.append(','.join(versions))
 
-    sl_no_common = np.arange(1,len(common_plugins)+1, 1)
+    sl_no_common = np.arange(1, len(common_plugins) + 1, 1)
     for p, no in enumerate(sl_no_common, start=2):
         common_plugins_sheet.cell(row=p, column=1, value=no)
 
@@ -81,75 +79,26 @@ def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
     common_plugins_sheet.row_dimensions[1].height = 48
     common_plugins_sheet.column_dimensions['B'].width = 40
     common_plugins_sheet.column_dimensions['C'].width = 20
-    
+
     wb.save(filename=f"plugin list_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx")
 
-def PluginListMaker(vst_path, au_path, vst3_path, aax_path):
-    """lists vst, vst3, au and aax plugins"""
+def find_plugins(plugin_path, file_extension):
+    plugin_list = []
     
-    vst_list = []
-    au_list = []
-    vst3_list = []
-    aax_list = []
+    def search_plugins(path):
+        for plugin in os.listdir(path):
+            plugin_path = os.path.join(path, plugin)
+            if plugin.endswith(file_extension):
+                plugin_list.append(plugin)
+            elif os.path.isdir(plugin_path):
+                search_plugins(plugin_path)
+    
+    if os.path.isdir(plugin_path):
+        search_plugins(plugin_path)
+    
+    return plugin_list
 
-
-    if vst_path:
-        for plugin in os.listdir(vst_path):
-            if plugin.endswith('.vst'):
-                vst_list.append(plugin)
-                continue
-            
-            new_vst_path = os.path.join(vst_path, plugin)
-            if os.path.isdir(new_vst_path):
-                for sub_plugin in os.listdir(new_vst_path):
-                    if sub_plugin.endswith('.vst'):
-                        vst_list.append(sub_plugin)
-                    continue
-        vst_list.sort()
-   
-    if au_path:
-        for plugin in os.listdir(au_path):
-            if plugin.endswith('.component'):
-                au_list.append(plugin)
-                continue
-            
-            new_au_path = os.path.join(au_path, plugin)
-            if os.path.isdir(new_au_path):
-                for sub_plugin in os.listdir(new_au_path):
-                    if sub_plugin.endswith('.component'):
-                        au_list.append(sub_plugin)
-                    continue        
-        au_list.sort()
-        
-    if vst3_path:
-        for plugin in os.listdir(vst3_path):
-            if plugin.endswith('.vst3'):
-                vst3_list.append(plugin)
-                continue
-            
-            new_vst3_path = os.path.join(vst3_path, plugin)
-            if os.path.isdir(new_vst3_path):
-                for sub_plugin in os.listdir(new_vst3_path):
-                    if sub_plugin.endswith('.vst3'):
-                        vst3_list.append(sub_plugin)
-                    continue
-        vst3_list.sort()
-
-    if aax_path:
-        for plugin in os.listdir(aax_path):
-            if plugin.endswith('.aaxplugin'):
-                aax_list.append(plugin)
-                continue
-            
-            new_aax_path = os.path.join(aax_path, plugin)
-            if os.path.isdir(new_aax_path):
-                for sub_plugin in os.listdir(new_aax_path):
-                    if sub_plugin.endswith('.aaxplugin'):
-                        aax_list.append(sub_plugin)
-                    continue
-        aax_list.sort()
-        
-    ExcelMaker(vst_list, au_list, vst3_list, aax_list)
+def PluginListMaker(vst_path, au_path, vst3_path, aax_path):
 
 print("Please enter the plugin directory paths (press enter if no path)")
 vst_path = input("Enter the VST plugin directory path: ")
