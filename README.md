@@ -3,7 +3,7 @@ This Python script generates an Excel file listing all plugins from specified di
 It categorizes them by plugin type and also creates a separate sheet for common plugins across formats along with their versions.
 
 # Features:
-- Scans specified directories for plugins in VST, VST3, AU, and AAX formats.
+- Scans specified directories for plugins in VST, VST3, AU, and AAX formats (both Plug-In and Plug-In (Unused) directory).
 - Generates an Excel file with detailed plugin lists.
 - Creates a second sheet with common plugins across different formats and their versions.
 
