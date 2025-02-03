@@ -17,20 +17,25 @@ def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
         sheet.cell(row=o, column=1, value=no)
                       
     if vst3_list:
+        new_vst3_list = []
         for i, vst3 in enumerate(vst3_list, start=2):
             sheet.cell(row=i, column=2, value=vst3.replace('.vst3', ''))
+            new_vst3_list.append(vst3.replace('.vst3', ''))
     if vst_list:
-        #c2 = sheet.cell(row=1, column=2, value='VST Plugins')
+        new_vst_list = []
         for j, vst in enumerate(vst_list, start=2):
             sheet.cell(row=j, column=3, value=vst.replace('.vst', ''))
+            new_vst_list.append(vst.replace('.vst', ''))
     if au_list:
-        #c3 = sheet.cell(row=1, column=3, value='AU Plugins')
+        new_au_list = []
         for k, au in enumerate(au_list, start=2):
             sheet.cell(row=k, column=4, value=au.replace('.component', ''))
+            new_au_list.append(au.replace('.component', ''))
     if aax_list:
-        #c4 = sheet.cell(row=1, column=4, value='AAX Plugins')
+        new_aax_list = []
         for l, aax in enumerate(aax_list, start=2):
             sheet.cell(row=l, column=5, value=aax.replace('.aaxplugin', ''))
+            new_aax_list.append(aax.replace('.aaxplugin', ''))
     
     sheet.row_dimensions[1].height = 48
     sheet.column_dimensions['B'].width = 35
@@ -43,23 +48,23 @@ def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
     headers_common = ['Sl. No','Common Plugins', 'Versions']
     common_plugins_sheet.append(headers_common)
 
-    combined_plugins = set(vst3_list) | set(vst_list) | set(au_list) | set(aax_list)
+    combined_plugins = sorted(set(new_vst3_list) | set(new_vst_list) | set(new_au_list) | set(new_aax_list))
     common_plugins = []
     plugin_versions = []
 
     for plugin in combined_plugins:
         versions = []
-        if vst3_list:
-            if plugin in vst3_list:
+        if new_vst3_list:
+            if plugin in new_vst3_list:
                 versions.append('VST3')
-        if vst_list:        
-            if plugin in vst_list:
+        if new_vst_list:        
+            if plugin in new_vst_list:
                 versions.append('VST')
-        if au_list:
-            if plugin in au_list:
+        if new_au_list:
+            if plugin in new_au_list:
                 versions.append('AU')
-        if aax_list:
-            if plugin in aax_list:
+        if new_aax_list:
+            if plugin in new_aax_list:
                 versions.append('AAX')
         if len(versions)>1:
             common_plugins.append(plugin)
@@ -73,7 +78,6 @@ def ExcelMaker(vst_list, au_list, vst3_list, aax_list):
         common_plugins_sheet.cell(row=m, column=2, value=common_plugin)
         common_plugins_sheet.cell(row=m, column=3, value=version)
 
-    
     common_plugins_sheet.row_dimensions[1].height = 48
     common_plugins_sheet.column_dimensions['B'].width = 40
     common_plugins_sheet.column_dimensions['C'].width = 20
@@ -156,3 +160,4 @@ aax_path = input("Enter the AAX plugin directory path: ")
 PluginListMaker(vst_path, au_path, vst3_path, aax_path)
 
 print(f"Excel file is created in {os.getcwd()}")
+
